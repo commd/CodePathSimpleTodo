@@ -37,6 +37,7 @@ The following **additional** features are implemented:
 Here's a walkthrough of implemented user stories:
 
 https://codepath-simpletodo-commd.c9users.io/index.html
+https://github.com/commd/CodePathSimpleTodo/issues/1
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
