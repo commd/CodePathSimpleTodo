@@ -1,5 +1,6 @@
 package com.codepath.simpletodo;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
     EditText etEditText;
     int lvPosition;
     String txt;
+    String updateTxt;
+
+    private final int REQUEST_CODE = 20;
 
 
     @Override
@@ -46,10 +50,20 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 lvPosition = position;
                 txt = aToDoAdapter.getItem(lvPosition);
-                etEditText.setText(txt);
+ //               etEditText.setText(txt);  // Remove to call new edit activity instead
+                launchActivityEditItem(lvPosition, txt);
             }
         });
 
+    }
+
+    public void launchActivityEditItem(int position, String txt) {
+        Intent i = new Intent(this, EditItemActivity.class);
+
+        // list view position and list view text to new activity
+        i.putExtra("lvposition", position);
+        i.putExtra("lvtxt", txt);
+        startActivityForResult(i, REQUEST_CODE);
     }
 
     public void populateArrayItems() {
@@ -96,6 +110,22 @@ public class MainActivity extends AppCompatActivity {
         etEditText.setText("");
         writeItems();
 
+    }
+
+    public void updateEditItem() {
+        txt = aToDoAdapter.getItem(lvPosition);
+        aToDoAdapter.remove(txt);
+        aToDoAdapter.insert(updateTxt, lvPosition);
+        writeItems();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            updateTxt = data.getExtras().getString("newText");
+            updateEditItem();
+        }
     }
 }
 
