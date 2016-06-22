@@ -123,8 +123,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            updateTxt = data.getExtras().getString("newText");
-            updateEditItem();
+            int code = data.getExtras().getInt("code", 0);
+            if (code == 200) {
+                updateTxt = data.getExtras().getString("newText");
+                updateEditItem();
+            } else if (code == 201) {
+                // delete
+                txt = aToDoAdapter.getItem(lvPosition);
+                aToDoAdapter.remove(txt);
+                writeItems();
+            } else if (code == 202) {
+                // cancel or do nothing
+            }
         }
     }
 }
